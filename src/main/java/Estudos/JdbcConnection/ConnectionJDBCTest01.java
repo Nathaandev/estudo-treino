@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ConnectionJDBCTest01 {
     public static void main(String[] args ) throws SQLException {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Você quer adicionar ou remover dados do banco de dados? (a/r) ");
+        System.out.print("Você quer adicionar, remover ou atualizar dados do banco de dados? (a/r/at) ");
         String escolha = sc.next();
         if (escolha.equals("a")){
             System.out.print("Nome: ");
@@ -23,6 +23,16 @@ public class ConnectionJDBCTest01 {
             int id = sc.nextInt();
             Trabalhadores trabalhadores = Trabalhadores.TrabalhadoresBuilder.aTrabalhadores().id(id).build();
             Trabalhadorservice.delete(id);
+        } else if (escolha.equals("at")){
+            System.out.print("Id: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+            System.out.print("Nome: ");
+            String nome = sc.nextLine();
+            System.out.print("Idade: ");
+            int idade = sc.nextInt();
+            Trabalhadores trabalhadores = Trabalhadores.TrabalhadoresBuilder.aTrabalhadores().id(id).nome(nome).idade(idade).build();
+            Trabalhadorservice.update(trabalhadores);
         }
     }
 }

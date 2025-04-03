@@ -27,5 +27,14 @@ public class TrabalhadoresRepository {
             e.printStackTrace();
         }
     }
+    public static void update(Trabalhadores trabalhadores){
+        String sql = "UPDATE `contas`.`trabalhadores` SET `Nome` = '%s', `idade` = '%d' WHERE (`id` = '%d')".formatted(trabalhadores.getNome(), trabalhadores.getIdade(), trabalhadores.getId());
+        try (Connection conn = ConnectionJDBC.getConnection();
+             Statement smt = conn.createStatement()) {
+            smt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

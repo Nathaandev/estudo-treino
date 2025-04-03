@@ -12,4 +12,7 @@ public class Trabalhadorservice {
         }
         TrabalhadoresRepository.delete(id);
     }
+    public static void update(Trabalhadores trabalhadores){
+        TrabalhadoresRepository.update(trabalhadores);
+    }
 }
