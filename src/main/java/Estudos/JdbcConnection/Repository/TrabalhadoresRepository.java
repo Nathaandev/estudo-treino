@@ -6,14 +6,26 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TrabalhadoresRepository {
-    public static void save (Trabalhadores trabalhadores){
+    public static void save(Trabalhadores trabalhadores) {
         String sql = "INSERT INTO `contas`.`trabalhadores` (`Nome`, `idade`) VALUES ('%s', '%d')".formatted(trabalhadores.getNome(), trabalhadores.getIdade());
-        try(Connection conn = ConnectionJDBC.getConnection();
-            Statement smt = conn.createStatement()){
+        try (Connection conn = ConnectionJDBC.getConnection();
+             Statement smt = conn.createStatement()) {
             int rows = smt.executeUpdate(sql);
             System.out.print(rows);
-        }catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void delete(int id) {
+        String sql = "DELETE FROM `contas`.`trabalhadores` WHERE (`id` = '%d')".formatted(id);
+        try (Connection conn = ConnectionJDBC.getConnection();
+             Statement smt = conn.createStatement()) {
+            int rows = smt.executeUpdate(sql);
+            System.out.print(rows);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 }
+
