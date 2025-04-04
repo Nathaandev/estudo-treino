@@ -1,5 +1,6 @@
 package Estudos.JdbcConnection.Dominio;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Trabalhadores {
@@ -8,6 +9,10 @@ public class Trabalhadores {
     private String nome;
     private int idade;
 
+    @Override
+    public String toString() {
+        return id + ", " + nome + ", " + idade + "\n";
+    }
 
     public static final class TrabalhadoresBuilder {
         private int id;

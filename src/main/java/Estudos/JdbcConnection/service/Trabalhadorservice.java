@@ -2,6 +2,8 @@ package Estudos.JdbcConnection.service;
 import Estudos.JdbcConnection.Dominio.Trabalhadores;
 import Estudos.JdbcConnection.Repository.TrabalhadoresRepository;
 
+import java.util.List;
+
 public class Trabalhadorservice {
     public static void save(Trabalhadores trabalhadores){
         TrabalhadoresRepository.save(trabalhadores);
@@ -14,5 +16,11 @@ public class Trabalhadorservice {
     }
     public static void update(Trabalhadores trabalhadores){
         TrabalhadoresRepository.update(trabalhadores);
+    }
+    public static List<Trabalhadores> FindAll(){
+        return TrabalhadoresRepository.FindAll();
+    }
+    public static void FindByName(Trabalhadores trabalhadores){
+        TrabalhadoresRepository.FindByName(trabalhadores);
     }
 }
