@@ -1,10 +1,8 @@
 package Estudos.JdbcConnection.Repository;
 import Estudos.JdbcConnection.ConnectionJDBC;
 import Estudos.JdbcConnection.Dominio.Trabalhadores;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +73,65 @@ public class TrabalhadoresRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public static void getMetaData(){
+        List<Trabalhadores> trabalhadoreslista = new ArrayList<>();
+        String sql = "SELECT * FROM trabalhadores";
+        try (Connection conn = ConnectionJDBC.getConnection();
+             Statement smt = conn.createStatement()){
+            ResultSet rs = smt.executeQuery(sql);
+            ResultSetMetaData rsMetaData = rs.getMetaData();
+            rs.next();
+            int colunas = rsMetaData.getColumnCount();
+            for (int i = 1 ; i <= colunas; i++ ){
+                System.out.printf("Existem %d colunas.\n", colunas);
+                System.out.printf("Nome da coluna: %s\n", rsMetaData.getCatalogName(i));
+                System.out.print("Tipo da coluna: "+ rsMetaData.getColumnType(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void AtualizarDados(String Nome){
+        String sql = "SELECT * FROM contas.trabalhadores where Nome like '%s%%';\n".formatted(Nome);
+        try (Connection conn = ConnectionJDBC.getConnection();
+        Statement smt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)){
+           ResultSet rs = smt.executeQuery(sql);
+           while (rs.next()){
+              rs.updateString("Nome",rs.getString("Nome").toLowerCase());
+              rs.updateRow();
+           }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void DriverMetadata(){
+        String sql = "SELECT * FROM trabalhadores";
+        try (Connection conn = ConnectionJDBC.getConnection()) {
+            DatabaseMetaData dbMetadata = conn.getMetaData();
+            if (dbMetadata.supportsResultSetType(ResultSet.TYPE_FORWARD_ONLY)){
+                System.out.println("Supports TYPE_FORWARD_ONLY");
+                if(dbMetadata.supportsResultSetConcurrency(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)){
+                    System.out.println("And supports CONCUR_UPDATABLE");
+                }
+            }
+            if (dbMetadata.supportsResultSetType(ResultSet.TYPE_SCROLL_INSENSITIVE)){
+                System.out.println("Supports TYPE_SCROLL_INSENSITIVE");
+                if(dbMetadata.supportsResultSetConcurrency(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)){
+                    System.out.println("And supports CONCUR_UPDATABLE");
+                }
+            }
+            if (dbMetadata.supportsResultSetType(ResultSet.TYPE_SCROLL_SENSITIVE)){
+                System.out.println("Supports TYPE_SCROLL_INSENSITIVE");
+                if(dbMetadata.supportsResultSetConcurrency(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)){
+                    System.out.println("And supports CONCUR_UPDATABLE");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

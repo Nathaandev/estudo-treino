@@ -23,4 +23,13 @@ public class Trabalhadorservice {
     public static void FindByName(Trabalhadores trabalhadores){
         TrabalhadoresRepository.FindByName(trabalhadores);
     }
+    public static void GetMetaData(){
+        TrabalhadoresRepository.getMetaData();
+    }
+    public static void AtualizarDados(String Nome){
+        TrabalhadoresRepository.AtualizarDados(Nome);
+    }
+    public static void DriverMetadata(){
+        TrabalhadoresRepository.DriverMetadata();
+    }
 }
