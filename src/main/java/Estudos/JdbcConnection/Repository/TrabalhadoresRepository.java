@@ -1,6 +1,7 @@
 package Estudos.JdbcConnection.Repository;
 import Estudos.JdbcConnection.ConnectionJDBC;
 import Estudos.JdbcConnection.Dominio.Trabalhadores;
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -100,6 +101,7 @@ public class TrabalhadoresRepository {
            while (rs.next()){
               rs.updateString("Nome",rs.getString("Nome").toLowerCase());
               rs.updateRow();
+
            }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,6 +133,32 @@ public class TrabalhadoresRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+    }
+    public static void FindByNamePrepareStatement(String Nome){
+        List<Trabalhadores> trabalhadoreslista = new ArrayList<>();
+        String sql = "SELECT * FROM trabalhadores WHERE Nome like ?;";
+        try (Connection conn = ConnectionJDBC.getConnection();
+             PreparedStatement smt = createdPreparedStatement(conn, sql, Nome);
+             ResultSet rs = smt.executeQuery();){
+
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String nome = rs.getString("Nome");
+                int idade = rs.getInt("idade");
+                Trabalhadores trabalhador = Trabalhadores.TrabalhadoresBuilder.aTrabalhadores().nome(nome).idade(idade).id(id).build();
+                trabalhadoreslista.add(trabalhador);
+                System.out.print(trabalhador);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private static PreparedStatement createdPreparedStatement(Connection conn, String sql, String Nome) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, String.format("%%%s%%", Nome));
+        return ps;
 
     }
 }

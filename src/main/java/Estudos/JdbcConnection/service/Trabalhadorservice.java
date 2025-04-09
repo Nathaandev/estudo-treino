@@ -32,4 +32,7 @@ public class Trabalhadorservice {
     public static void DriverMetadata(){
         TrabalhadoresRepository.DriverMetadata();
     }
+    public static void FindByNamePrepareStatement(String Nome){
+        TrabalhadoresRepository.FindByNamePrepareStatement(Nome);
+    }
 }
