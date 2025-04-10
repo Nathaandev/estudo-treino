@@ -6,10 +6,14 @@ import Estudos.JdbcConnection.listener.CustomRowSetListener;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.JdbcRowSet;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 public class TrabalhadoresRepositoryRowSet {
+
+
     public static List<Trabalhadores> FindByNameJdbcRowSet(String Nome){
         String sql = "SELECT * FROM trabalhadores WHERE Nome like ?;";
         List<Trabalhadores> trabalhadorlist = new ArrayList<>();

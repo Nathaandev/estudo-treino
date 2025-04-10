@@ -1,13 +1,38 @@
 package Estudos.JdbcConnection.Repository;
 import Estudos.JdbcConnection.ConnectionJDBC;
 import Estudos.JdbcConnection.Dominio.Trabalhadores;
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrabalhadoresRepository {
+
+    public static void saveTransaction(List<Trabalhadores> trabalhadores) {
+        try (Connection conn = ConnectionJDBC.getConnection()){
+            conn.setAutoCommit(false);
+            preparedStatementSaveTransaction(conn, trabalhadores);
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void preparedStatementSaveTransaction(Connection conn, List<Trabalhadores> trabalhadores) throws SQLException {
+        String sql = "INSERT INTO `contas`.`trabalhadores` (`Nome`, `idade`) VALUES (?, ?);";
+        boolean shouldrollback = false;
+        for(Trabalhadores t : trabalhadores){
+            try(PreparedStatement ps = conn.prepareStatement(sql);) {
+                ps.setString(1, t.getNome());
+                ps.setInt(2, t.getIdade());
+                ps.execute();
+            }catch (SQLException e){
+                e.printStackTrace();
+                shouldrollback = true;
+            }
+        }
+        if (shouldrollback) conn.rollback();
+    }
+
     public static void save(Trabalhadores trabalhadores) {
         String sql = "INSERT INTO `contas`.`trabalhadores` (`Nome`, `idade`) VALUES ('%s', '%d')".formatted(trabalhadores.getNome(), trabalhadores.getIdade());
         try (Connection conn = ConnectionJDBC.getConnection();

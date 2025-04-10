@@ -5,6 +5,10 @@ import Estudos.JdbcConnection.Repository.TrabalhadoresRepository;
 import java.util.List;
 
 public class Trabalhadorservice {
+    public static void saveTransaction(List<Trabalhadores> trabalhadores) {
+        TrabalhadoresRepository.saveTransaction(trabalhadores);
+    }
+
     public static void save(Trabalhadores trabalhadores){
         TrabalhadoresRepository.save(trabalhadores);
     }
