@@ -29,6 +29,7 @@ public class TrabalhadoresRepository {
                 e.printStackTrace();
                 shouldrollback = true;
             }
+
         }
         if (shouldrollback) conn.rollback();
     }
